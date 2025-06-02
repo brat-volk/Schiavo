@@ -7,6 +7,8 @@
 #include <fstream>
 #include <shlobj_core.h>
 #include <lm.h>
+#include <unordered_map>
+#include <sstream>
 #include "buildoptions.h"
 #include "json.hpp"
 
@@ -21,12 +23,8 @@ namespace network {
 namespace interpreter {
     std::wstring InterpretTask(std::wstring task);
     
-    namespace action {
-        bool SelfDelete();
-        bool DownloadFile(std::wstring url, std::wstring path);
-        bool IsAdmin();
-        bool Execute(std::wstring path, bool spoofPPID, bool );
-    }
+    void* createfilewrap();
+        
 }
 
 namespace communication {

