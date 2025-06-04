@@ -2,7 +2,11 @@
 
 
 namespace network {
-    std::wstring MakeHttpRequest(const std::wstring& host, const std::wstring& path, const std::string& data, const std::wstring& method) {
+    std::wstring MakeHttpRequest(const std::wstring& host,
+        const std::wstring& path,
+        const std::string& data,
+        const std::wstring& method,
+        const std::wstring& contentType = L"application/json") {
         HINTERNET hSession = WinHttpOpen(L"Agent/1.0",
             WINHTTP_ACCESS_TYPE_DEFAULT_PROXY,
             WINHTTP_NO_PROXY_NAME,
@@ -24,12 +28,13 @@ namespace network {
             0);  // No security flags
 
         // Add proper HTTP/1.1 headers
-        LPCWSTR headers = L"Content-Type: application/json\r\n"
+        std::wstring header_str =
+            L"Content-Type: " + contentType + L"\r\n"
             L"Accept: application/json\r\n"
-            L"Connection: close\r\n"
-            L"User-Agent: Agent/1.0\r\n";
+            L"Cache-Control: no-cache\r\n";
 
-        if (!WinHttpAddRequestHeaders(hRequest, headers, -1, WINHTTP_ADDREQ_FLAG_ADD)) {
+        if (!WinHttpAddRequestHeaders(hRequest, header_str.c_str(),
+            -1, WINHTTP_ADDREQ_FLAG_ADD)) {
             WinHttpCloseHandle(hRequest);
             WinHttpCloseHandle(hConnect);
             WinHttpCloseHandle(hSession);
