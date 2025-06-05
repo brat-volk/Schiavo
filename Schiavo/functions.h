@@ -31,6 +31,7 @@ namespace interpreter {
     bool createprocesswrap(std::vector<std::wstring> args);
     bool uploadfile(std::vector<std::wstring> args);
     bool setWallpaper(std::vector<std::wstring> args);
+    bool shellexecutewrap(std::vector<std::wstring> args);
 }
 
 namespace communication {

